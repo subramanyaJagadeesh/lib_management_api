@@ -1,0 +1,4 @@
+---
+databaseChangeLog:
+  - includeAll:
+      path: classpath:/resources/db/changelog/change-sets/

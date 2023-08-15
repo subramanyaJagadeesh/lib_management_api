@@ -1,0 +1,44 @@
+server:
+  port: 9092
+  tomcat:
+    max-connections: 300
+    threads:
+      max: 250
+
+#spring-doc:
+#  api-docs:
+#    enabled: true
+#    path: /api-docs
+#  swagger-ui:
+#    operationsSorter: method
+#    path: /swagger-ui.html
+#
+#swagger-config:
+#  title: "Library Management API"
+#  description: "Rest APIs for managing a library"
+#  version: "version-1"
+  
+spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/library_management?zeroDateTimeBehavior=convertToNull
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    hikari:
+      minimum-idle: 20
+      maximum-pool-size: 50
+      idle-timeout: 10000
+      connection-timeout: 30000
+  liquibase:
+    enabled: false
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+    default-schema: library_management
+  cache:
+    type: none
+#cors:
+#  timeout: 3600
+#  allowed-origins: "*"
+#  allowed-headers: "*"
