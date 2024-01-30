@@ -1,4 +1,4 @@
-package com.library_management.api.Model;
+package com.library_management.api.model;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,6 +1,6 @@
-package com.library_management.api.Controller;
+package com.library_management.api.controller;
 
-import com.library_management.api.Model.User;
+import com.library_management.api.model.User;
 import com.library_management.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -49,19 +49,6 @@ public class UserController {
     public ResponseEntity<User> getUser() {
         Long userId = ((User) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getId();
         return ResponseEntity.ok().body(userService.getUser(userId));
-    }
-
-    @PostMapping("/create")
-    @Operation(summary = "Endpoint to create a user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "create a user",
-                    content = { @Content(mediaType = "application/json",
-                            array = @ArraySchema( schema = @Schema(implementation = User.class))) }),
-            @ApiResponse(responseCode = "400", description = "Invalid json",
-                    content = @Content) })
-    public ResponseEntity<String> createUser(@RequestBody User user){
-        userService.createUser(user.getFirstName(), user.getLastName(), user.getPhone(), user.getEmail(), user.getType());
-        return ResponseEntity.ok().body("User created successfully");
     }
 
     @PostMapping("/delete")

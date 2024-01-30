@@ -22,7 +22,6 @@ public class ErrorResponse {
         this.status = status;
         this.exception = e;
         this.message = exception.getMessage();
-
     }
 
     public ErrorResponse(int status, String code, Exception exception) {

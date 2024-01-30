@@ -1,6 +1,6 @@
 package com.library_management.api.service;
 
-import com.library_management.api.Model.Book;
+import com.library_management.api.model.Book;
 
 import java.util.Date;
 import java.util.List;

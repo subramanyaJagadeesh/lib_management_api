@@ -1,6 +1,6 @@
 package com.library_management.api.service.impl;
 
-import com.library_management.api.Model.User;
+import com.library_management.api.model.User;
 import com.library_management.api.repository.UserRepository;
 import com.library_management.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUser(id);
     }
 
-    public void createUser(String fName, String lName, String phone, String email, Integer type) {
-        userRepository.createUser(fName, lName, phone, email, type);
+    public void createUser(String fName, String lName, String phone, String email, Integer type, String password) {
+        userRepository.createUser(fName, lName, phone, email, type, password);
     }
 
     public void deleteUser(Long userId) {

@@ -1,6 +1,6 @@
 package com.library_management.api.service;
 
-import com.library_management.api.Model.Borrow;
+import com.library_management.api.model.Borrow;
 
 import java.util.Date;
 import java.util.List;

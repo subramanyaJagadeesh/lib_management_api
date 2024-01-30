@@ -1,6 +1,6 @@
 package com.library_management.api.service.impl;
 
-import com.library_management.api.Model.Borrow;
+import com.library_management.api.model.Borrow;
 import com.library_management.api.repository.BorrowRepository;
 import com.library_management.api.service.BorrowService;
 import org.springframework.beans.factory.annotation.Autowired;

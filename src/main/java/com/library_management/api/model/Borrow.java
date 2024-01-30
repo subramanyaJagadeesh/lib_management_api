@@ -1,4 +1,4 @@
-package com.library_management.api.Model;
+package com.library_management.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;

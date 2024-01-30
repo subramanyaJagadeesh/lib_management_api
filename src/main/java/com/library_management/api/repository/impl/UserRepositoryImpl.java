@@ -1,16 +1,16 @@
 package com.library_management.api.repository.impl;
 
-import com.library_management.api.Model.User;
+import com.library_management.api.model.User;
 import com.library_management.api.exception.InternalServerException;
 import com.library_management.api.exception.ResourceNotFound;
 import com.library_management.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -33,7 +33,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static String CREATE_USER = "INSERT INTO user(first_name, last_name, email, phone, :type) values (:first_name, :last_name, :email, :phone, :type)";
 
-    private static String DELETE_USER = "DELETE from user where user_id = (:user_id)";
+    private static String DELETE_USER = "DELETE from user where id = (:user_id)";
+
+    private static String GET_PASSWORD_FOR_USER = "SELECT * from user where email = (:email)";
+
     public List<User> getAllUsers(Boolean type) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("type", type);
@@ -52,13 +55,25 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    public void createUser(String fName, String lName, String phone, String email, Integer type) {
+    public User getUserByEmail(String email){
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("email", email);
+        try{
+            return readjdbcTemplate.queryForObject(GET_PASSWORD_FOR_USER, parameters, new UserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFound("No such user with email: "+email+" found");
+        }
+    }
+
+    public void createUser(String fName, String lName, String phone, String email, Integer type, String password) {
         MapSqlParameterSource parameter = new MapSqlParameterSource();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         parameter.addValue("first_name", fName);
         parameter.addValue("last_name", lName);
         parameter.addValue("phone", phone);
         parameter.addValue("email", email);
         parameter.addValue("type", type);
+        parameter.addValue("password", encoder.encode(password));
 
         try{
             writeJdbcTemplate.update(CREATE_USER, parameter);
@@ -85,7 +100,9 @@ public class UserRepositoryImpl implements UserRepository {
                     .lastName(rs.getString("last_name"))
                     .phone(rs.getString("phone"))
                     .email(rs.getString("email"))
+                    .password(rs.getString("password"))
                     .build();
         }
     }
+
 }

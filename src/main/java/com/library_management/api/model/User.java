@@ -1,6 +1,5 @@
-package com.library_management.api.Model;
+package com.library_management.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,5 +34,8 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private Integer type;
+
+    @Column(nullable = false)
+    private String password;
 
 }

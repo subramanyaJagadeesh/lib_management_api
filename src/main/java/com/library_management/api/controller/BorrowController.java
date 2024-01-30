@@ -1,7 +1,6 @@
-package com.library_management.api.Controller;
+package com.library_management.api.controller;
 
-import com.library_management.api.Model.Borrow;
-import com.library_management.api.Model.User;
+import com.library_management.api.model.Borrow;
 import com.library_management.api.service.BorrowService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

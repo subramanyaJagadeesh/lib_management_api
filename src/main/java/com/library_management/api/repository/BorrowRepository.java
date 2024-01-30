@@ -1,6 +1,6 @@
 package com.library_management.api.repository;
 
-import com.library_management.api.Model.Borrow;
+import com.library_management.api.model.Borrow;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

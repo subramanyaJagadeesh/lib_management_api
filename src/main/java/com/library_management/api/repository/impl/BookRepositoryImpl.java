@@ -1,13 +1,12 @@
 package com.library_management.api.repository.impl;
 
-import com.library_management.api.Model.Book;
+import com.library_management.api.model.Book;
 import com.library_management.api.exception.InternalServerException;
 import com.library_management.api.exception.ResourceNotFound;
 import com.library_management.api.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

@@ -1,6 +1,6 @@
 package com.library_management.api.repository.impl;
 
-import com.library_management.api.Model.Borrow;
+import com.library_management.api.model.Borrow;
 import com.library_management.api.exception.InternalServerException;
 import com.library_management.api.repository.BorrowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
