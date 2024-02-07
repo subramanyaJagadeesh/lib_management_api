@@ -1,9 +1,11 @@
 package com.library_management.api.model;
 
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity(name = "book")
@@ -33,4 +35,14 @@ public class Book implements Serializable {
 
     @Column(nullable = false)
     private Date publishedDate;
+
+    @Column
+    private String description;
+
+    @Column
+    private String img;
+
+    public void setPublishedDate(String date) throws ParseException {
+        this.publishedDate = new SimpleDateFormat("yyyy/MM/dd").parse(date);
+    }
 }

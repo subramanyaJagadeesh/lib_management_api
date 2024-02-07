@@ -1,5 +1,6 @@
 package com.library_management.api.controller;
 
+import com.library_management.api.dto.BorrowDTO;
 import com.library_management.api.model.Borrow;
 import com.library_management.api.service.BorrowService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +32,7 @@ public class BorrowController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "No Borrows found",
                     content = @Content) })
-    public List<Borrow> getAllBorrowings(){
+    public List<BorrowDTO> getAllBorrowings(){
         return borrowService.getAllBorrowings();
     }
     
@@ -45,12 +46,12 @@ public class BorrowController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "No Borrows found",
                     content = @Content) })
-    public List<Borrow> getBorrowingByBookName(@RequestParam String title){
+    public List<BorrowDTO> getBorrowingByBookName(@RequestParam String title){
         return borrowService.getBorrowingByBookTitle(title);
     }
 
 
-    @GetMapping("/userId")
+    @GetMapping("/user/{id}")
     @Operation(summary = "Endpoint to fetch all borrowings for a user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "fetch all borrowings",
@@ -60,8 +61,8 @@ public class BorrowController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "No Borrows found",
                     content = @Content) })
-    public List<Borrow> getBorrowingByUser(@RequestParam Long userId){
-        return borrowService.getBorrowingByUser(userId);
+    public List<BorrowDTO> getBorrowingByUser(@PathVariable Long id){
+        return borrowService.getBorrowingByUser(id);
     }
 
     @PostMapping("/create")

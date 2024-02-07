@@ -1,12 +1,12 @@
 package com.library_management.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 import java.util.Date;
 
-//@Entity(name = "borrow")
+@Entity(name = "borrow")
 @Getter
 @Setter
 @NoArgsConstructor

@@ -1,5 +1,6 @@
 package com.library_management.api.repository.impl;
 
+import com.library_management.api.enums.BookCategory;
 import com.library_management.api.model.Book;
 import com.library_management.api.exception.InternalServerException;
 import com.library_management.api.exception.ResourceNotFound;
@@ -94,6 +95,9 @@ public class BookRepositoryImpl implements BookRepository {
                     .author(rs.getString("author"))
                     .inventorySize(rs.getLong("inventory_size"))
                     .publishedDate(rs.getDate("published_date"))
+                    .img(rs.getString("img"))
+                    .description(rs.getString("description"))
+                    .category((rs.getInt("category")))
                     .build();
         }
     }

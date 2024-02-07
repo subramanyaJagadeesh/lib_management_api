@@ -17,11 +17,18 @@ server:
 #  title: "Library Management API"
 #  description: "Rest APIs for managing a library"
 #  version: "version-1"
-  
+cors:
+  timeout: 3600
+  allowed-origins: "*"
+  allowed-headers: "*"
+
 spring:
   jackson:
     serialization:
       write-dates-as-timestamps: false
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
   datasource:
     url: jdbc:mysql://localhost:3306/library_management?zeroDateTimeBehavior=convertToNull
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -33,12 +40,8 @@ spring:
       idle-timeout: 10000
       connection-timeout: 30000
   liquibase:
-    enabled: false
-    change-log: classpath:/db/changelog/db.changelog-master.yml
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
     default-schema: library_management
   cache:
     type: none
-#cors:
-#  timeout: 3600
-#  allowed-origins: "*"
-#  allowed-headers: "*"

@@ -4,12 +4,13 @@ import com.library_management.api.exception.NotAuthorizedException;
 import com.library_management.api.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.Jwts;
 
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@Component
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final String secretKey = "LibraryManagementSecret";
 
@@ -50,7 +52,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        return path.equals("/login") || path.equals("/signup") || path.contains("/user");
+        return path.equals("/auth/login") || path.equals("/auth/signup");
     }
     private boolean validateToken(Claims claims) {
         try {
@@ -64,7 +66,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private User getUserDetailsFromToken(Claims claims) {
         return User.builder()
-                .id((long) claims.get("id"))
+                .id(Long.valueOf(claims.get("id").toString()))
                 .email((String) claims.get("email"))
                 .firstName((String) claims.get("firstName"))
                 .lastName((String) claims.get("lastName"))
@@ -79,26 +81,24 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         return null;
     }
     public String generateToken(User user) {
-        final long EXPIRATION_TIME = 3600000; // 1 hour in milliseconds
-        final String SECRET_KEY = "YourSecretKey"; // Use a secure method to store and manage the secret key
+        final long EXPIRATION_TIME = 3600000 * 24 * 7; // 1 hour in milliseconds
 
         Map<String, Object> claims = new HashMap<>();
         // Add user-specific information to claims
-        claims.put("id", user.getId());
+        claims.put("id", user.getId().toString());
         claims.put("email", user.getEmail());
         claims.put("firstName", user.getFirstName());
         claims.put("lastName", user.getLastName());
         claims.put("email", user.getEmail());
-        claims.put("type", user.getType());
+        claims.put("type", user.getType().toString());
         // Add more claims if necessary, like roles
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(user.getId().toString())
-                .setSubject(user.getType().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
     }
 }

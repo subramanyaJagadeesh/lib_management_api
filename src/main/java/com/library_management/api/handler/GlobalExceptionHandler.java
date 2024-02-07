@@ -1,14 +1,12 @@
 package com.library_management.api.handler;
 
-import com.library_management.api.exception.CustomDatabaseException;
-import com.library_management.api.exception.ErrorResponse;
-import com.library_management.api.exception.NoInputValueException;
-import com.library_management.api.exception.NotAuthorizedException;
+import com.library_management.api.exception.*;
 import lombok.AllArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
+import org.webjars.NotFoundException;
 
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 import static org.springframework.http.HttpStatus.*;
@@ -60,6 +58,13 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ErrorResponse AccessDeniedExceptionHandler(AccessDeniedException accessDeniedException) {
         return new ErrorResponse(FORBIDDEN.value(), accessDeniedException);
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(ResourceNotFound.class)
+    @ResponseBody
+    public ErrorResponse NotFoundExceptionHandler(ResourceNotFound ex) {
+        return new ErrorResponse(NOT_FOUND.value(), ex);
     }
 
     @ResponseStatus(INTERNAL_SERVER_ERROR)

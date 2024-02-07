@@ -1,10 +1,10 @@
 package com.library_management.api.model;
 
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
-//@Entity(name = "category")
+@Entity(name = "category")
 @Getter
 @Setter
 @NoArgsConstructor

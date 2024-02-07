@@ -1,5 +1,6 @@
 package com.library_management.api.controller;
 
+import com.library_management.api.dto.LoginDTO;
 import com.library_management.api.model.User;
 import com.library_management.api.service.AuthService;
 import com.library_management.api.service.UserService;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
     @Autowired
     UserService userService;
@@ -34,9 +35,9 @@ public class AuthController {
                             array = @ArraySchema( schema = @Schema(implementation = User.class))) }),
             @ApiResponse(responseCode = "400", description = "Invalid json",
                     content = @Content) })
-    public ResponseEntity<String> login(@RequestBody String email, @RequestBody String password){
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO){
 
-        return ResponseEntity.ok().body(authService.login(email, password));
+        return ResponseEntity.ok().body(authService.login(loginDTO.getEmail(), loginDTO.getPassword()));
     }
 
     @PostMapping("/signup")
@@ -47,14 +48,8 @@ public class AuthController {
                             array = @ArraySchema( schema = @Schema(implementation = User.class))) }),
             @ApiResponse(responseCode = "400", description = "Invalid json",
                     content = @Content) })
-    public ResponseEntity<String> signup(
-            @RequestBody String firstName,
-            @RequestBody String lastName,
-            @RequestBody String phone,
-            @RequestBody String email,
-            @RequestBody String password
-    ){
-        userService.createUser(firstName, lastName, phone, email, 0, password);
+    public ResponseEntity<String> signup(@RequestBody User user){
+        authService.signup(user);
         return ResponseEntity.ok().body("User created successfully");
     }
 

@@ -31,7 +31,7 @@ public class UserRepositoryImpl implements UserRepository {
     private static String GET_ALL_USERS = "SELECT * FROM user where type = (:type)";
     private static String GET_USER = "SELECT * FROM user where id = (:id)";
 
-    private static String CREATE_USER = "INSERT INTO user(first_name, last_name, email, phone, :type) values (:first_name, :last_name, :email, :phone, :type)";
+    private static String CREATE_USER = "INSERT INTO user(first_name, last_name, email, phone, type, password) values (:first_name, :last_name, :email, :phone, :type, :password)";
 
     private static String DELETE_USER = "DELETE from user where id = (:user_id)";
 
@@ -101,6 +101,7 @@ public class UserRepositoryImpl implements UserRepository {
                     .phone(rs.getString("phone"))
                     .email(rs.getString("email"))
                     .password(rs.getString("password"))
+                    .type(rs.getInt("type"))
                     .build();
         }
     }

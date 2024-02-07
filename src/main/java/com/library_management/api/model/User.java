@@ -1,11 +1,11 @@
 package com.library_management.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.io.Serializable;
-//@Entity(name = "user")
+@Entity(name = "user")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,7 +29,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String email;
 
-    @Column(columnDefinition = "String default null")
+    @Column(nullable = false)
     private String phone;
 
     @Column(nullable = false)

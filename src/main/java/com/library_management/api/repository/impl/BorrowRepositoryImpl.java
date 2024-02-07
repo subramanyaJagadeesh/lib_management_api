@@ -1,5 +1,7 @@
 package com.library_management.api.repository.impl;
 
+import com.library_management.api.dto.BorrowDTO;
+import com.library_management.api.model.Book;
 import com.library_management.api.model.Borrow;
 import com.library_management.api.exception.InternalServerException;
 import com.library_management.api.repository.BorrowRepository;
@@ -28,22 +30,22 @@ public class BorrowRepositoryImpl implements BorrowRepository {
 
     private static String GET_ALL_BORROWINGS = "SELECT * FROM borrow";
     private static final String GET_BORROWINGS_BY_BOOK_NAME = "SELECT * FROM borrow bo inner join book b on b.id = bo.book_id WHERE b.title = (:title)";
-    private static final String GET_BORROWINGS_BY_USER = "SELECT * FROM borrow WHERE user_id = (:userId)";
+    private static final String GET_BORROWINGS_BY_USER = "SELECT bw.id, bw.user_id, bw.start_date, bw.end_date, bw.actual_return_date, bw.is_due, bo.id as book_id, bo.title, bo.author, bo.inventory_size as inventory, bo.img FROM borrow bw inner join book bo on bw.book_id = bo.id WHERE user_id = (:userId)";
 
     private static final String CREATE_BORROWING = "INSERT into borrow(book_id, user_id, start_date, end_date) values(:bookId, :userId, :startDate, :endDate)";
 
     private static final String DELETE_BORROWING = "DELETE from borrow WHERE id = (:id)";
-    public List<Borrow> getAllBorrowings(){
+    public List<BorrowDTO> getAllBorrowings(){
         return readJdbcTemplate.query(GET_ALL_BORROWINGS, new BorrowMapper());
     }
 
-    public List<Borrow> getBorrowingByBookTitle(String bookName) {
+    public List<BorrowDTO> getBorrowingByBookTitle(String bookName) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("title", bookName);
         return readJdbcTemplate.query(GET_BORROWINGS_BY_BOOK_NAME, params, new BorrowMapper());
     }
 
-    public List<Borrow> getBorrowingByUser(Long userId) {
+    public List<BorrowDTO> getBorrowingByUser(Long userId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("userId", userId);
         return readJdbcTemplate.query(GET_BORROWINGS_BY_USER, params, new BorrowMapper());
@@ -73,11 +75,17 @@ public class BorrowRepositoryImpl implements BorrowRepository {
         }
     }
 
-    public static final class BorrowMapper implements RowMapper<Borrow> {
-        public Borrow mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return Borrow.builder()
+    public static final class BorrowMapper implements RowMapper<BorrowDTO> {
+        public BorrowDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return BorrowDTO.builder()
                     .id(rs.getLong("id"))
-                    .bookId(rs.getLong("book_id"))
+                    .book(Book.builder()
+                            .id(rs.getLong("book_id"))
+                            .author(rs.getString("author"))
+                            .title(rs.getString("title"))
+                            .inventorySize(rs.getLong("inventory"))
+                            .img(rs.getString("img"))
+                            .build())
                     .userId(rs.getLong("user_id"))
                     .startDate(rs.getDate("start_date"))
                     .endDate(rs.getDate("end_date"))

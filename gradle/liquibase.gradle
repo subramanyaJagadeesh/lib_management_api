@@ -26,7 +26,7 @@ task liquibaseDiffChangelog(type: JavaExec) {
     args "--password=root"
     args "--url=jdbc:mysql://localhost:3306/library_management?zeroDateTimeBehavior=convertToNull"
     args "--referenceDriver=liquibase.ext.hibernate.database.connection.HibernateDriver"
-    args "--logLevel=flag"
+    args "--logLevel=debug"
     args "diffChangeLog"
 }
 
@@ -42,9 +42,9 @@ task generateChangeLogWithDiffTypesData(type: JavaExec) {
 
     args "--changeLogFile=${diffLog}"
     args "--contexts=local"
-    args "--url=jdbc:mysql://localhost:3306/learner_progress?zeroDateTimeBehavior=convertToNull"
+    args "--url=jdbc:mysql://localhost:3306/library_management?zeroDateTimeBehavior=convertToNull"
     args "--username=root"
-    args "--password=ueducation"
+    args "--password=root"
     args "--driver=com.mysql.cj.jdbc.Driver"
     args "--diffTypes=data"
     args "generateChangeLog"

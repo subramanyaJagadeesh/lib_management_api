@@ -36,7 +36,7 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getAllUsers(type));
     }
 
-    @GetMapping("/:id")
+    @GetMapping("/details")
     @Operation(summary = "Endpoint to fetch a user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "fetch a user",
@@ -51,6 +51,19 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUser(userId));
     }
 
+    @PostMapping("/create")
+    @Operation(summary = "Endpoint to create a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "create a user",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema( schema = @Schema(implementation = User.class))) }),
+            @ApiResponse(responseCode = "400", description = "Invalid json",
+                    content = @Content) })
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+        userService.createUser(user.getFirstName(), user.getLastName(), user.getPhone(), user.getEmail(), user.getType(), user.getPassword());
+        return ResponseEntity.ok().body("User created successfully");
+    }
+
     @PostMapping("/delete")
     @Operation(summary = "Endpoint to delete a user")
     @ApiResponses(value = {
@@ -59,7 +72,7 @@ public class UserController {
                             array = @ArraySchema( schema = @Schema(implementation = User.class))) }),
             @ApiResponse(responseCode = "400", description = "Invalid json",
                     content = @Content) })
-    public ResponseEntity<String> deleteUser(@RequestParam() Long userId) {
+    public ResponseEntity<String> deleteUser(@RequestParam Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok().body("User deleted successfully");
     }
