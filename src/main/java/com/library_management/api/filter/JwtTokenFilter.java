@@ -1,5 +1,7 @@
 package com.library_management.api.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.library_management.api.exception.ErrorResponse;
 import com.library_management.api.exception.NotAuthorizedException;
 import com.library_management.api.model.User;
 import io.jsonwebtoken.Claims;
@@ -8,6 +10,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -45,7 +49,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } catch (Exception e){
-            throw new NotAuthorizedException(e.getMessage());
+            handleExceptionsUnderFilter(response);
         }
     }
 
@@ -62,6 +66,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             // Log exception, token validation failed
             return false;
         }
+    }
+
+    protected void handleExceptionsUnderFilter(HttpServletResponse httpServletResponse) throws IOException {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+        httpServletResponse.setContentType("application/json");
+        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
     }
 
     private User getUserDetailsFromToken(Claims claims) {

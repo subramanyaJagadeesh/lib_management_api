@@ -1,0 +1,31 @@
+databaseChangeLog:
+- changeSet:
+    id: 1706826390758-2
+    author: subramanyajagadeesh (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: description
+            type: varchar(255)
+        tableName: book
+- changeSet:
+    id: 1706826390758-3
+    author: subramanyajagadeesh (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: img
+            type: varchar(255)
+        tableName: book
+- changeSet:
+    id: 1706826390758-1
+    author: subramanyajagadeesh (generated)
+    changes:
+    - addDefaultValue:
+        columnDataType: boolean
+        columnName: is_due
+        defaultValueComputed: '0'
+        tableName: borrow
+

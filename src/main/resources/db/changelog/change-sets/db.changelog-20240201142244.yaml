@@ -1,0 +1,11 @@
+databaseChangeLog:
+- changeSet:
+    id: 1706826167623-1
+    author: subramanyajagadeesh (generated)
+    changes:
+    - addDefaultValue:
+        columnDataType: boolean
+        columnName: is_due
+        defaultValueComputed: '0'
+        tableName: borrow
+
